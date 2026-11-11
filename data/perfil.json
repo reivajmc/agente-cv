@@ -1,0 +1,95 @@
+{
+  "informacion_personal": {
+    "nombre_completo": "Javier Melendrez Cedillo",
+    "titulo_profesional": "Data Engineering Solutions Development Manager",
+    "email_contacto": "reivajmc@gmail.com",
+    "ubicacion": "México",
+    "resumen_ejecutivo": "Ingeniero de datos y líder técnico con 5 años de experiencia especializada en el desarrollo de procesos ETL / Big Data, respaldado por más de 2 años ejerciendo funciones de liderazgo técnico, agilidad y aseguramiento de la calidad en el desarrollo. Especialista en arquitecturas distribuidas, pases a producción, QA técnico, metodologías ágiles (Scrum Master) y diseño de soluciones aplicadas con IA Generativa (RAG y agentes autónomos)."
+  },
+  "experiencia_laboral": [
+    {
+      "empresa": "BBVA México",
+      "puesto_principal": "Data Engineering Solutions Development Manager",
+      "puesto_anterior": "Data Engineering Solutions Development Associate I",
+      "periodo": "Octubre 2021 - Noviembre 2026",
+      "roles_transversales": [
+        "Líder Técnico de Datos",
+        "Scrum Master (SM Data)",
+        "Frente Técnico QA Repositorios (VoBo QA +1)",
+        "Change Lead de Confianza (Puestas en Producción)",
+        "Backup de App Owner",
+        "Backup de Data Scientist (Sostenibilidad)"
+      ],
+      "responsabilidades_clave": [
+        "Gobernanza de productividad y cumplimiento de estándares del marco ONE en Workspace Analítica Apps vía Jira.",
+        "Diseño, mejora y ejecución de modelos analíticos avanzados y extracción de evidencia empírica para el eje estratégico de Sostenibilidad.",
+        "Desarrollo de procesos ETL complejos y flujos analíticos en Spark y Python en plataforma ADA.",
+        "Consultoría y soporte transversal a múltiples equipos para transferencias críticas de datos.",
+        "Diagnóstico de errores en capas de transporte y logs profundos a través de AWS CloudWatch.",
+        "Filtro técnico (VoBo QA +1) para la revisión e integración de Pull Requests (PRs) de develop a master en GitHub.",
+        "Supervisión de normativa de repositorios y gestión automatizada de nuevos entornos mediante VoBi.",
+        "Liderazgo del ciclo de lanzamientos productivos y administración de cambios (CRQs en Helix) bajo Control-M, diseñando planes de pruebas y planes de retorno (Rollback)."
+      ]
+    }
+  ],
+  "stack_tecnologico": {
+    "lenguajes_y_big_data": [
+      "Apache Spark",
+      "Python",
+      "HDFS",
+      "Programación Funcional",
+      "Programación Orientada a Objetos (POO)"
+    ],
+    "ia_generativa_y_llms": [
+      "Arquitecturas RAG",
+      "Agentes Autónomos (Tool Calling)",
+      "Bases de Datos Vectoriales",
+      "Embeddings",
+      "Prompt Engineering",
+      "Open Responses",
+      "Protocolo MCP"
+    ],
+    "cloud_y_devops": [
+      "AWS S3",
+      "AWS Athena",
+      "AWS CloudWatch",
+      "AWS SageMaker",
+      "Git",
+      "GitHub",
+      "Jenkins",
+      "Linux (Fedora/RHEL)"
+    ],
+    "gobernanza_y_operacion": [
+      "BMC Helix (CRQs)",
+      "DataX",
+      "Control-M",
+      "Gestión de UUAA",
+      "Plataforma ADA (BBVA)"
+    ],
+    "metodologias_y_gestion": [
+      "Scrum Master",
+      "Marco ONE",
+      "Jira",
+      "Gestión del Cambio e Incidentes"
+    ]
+  },
+  "tecnologias_fuera_de_alcance": [
+    "Cobol",
+    "Rust",
+    "Go / Golang",
+    "ABAP / SAP",
+    "Swift / iOS Nativo",
+    "Kotlin / Android Nativo"
+  ],
+  "educacion_y_certificaciones": {
+    "posgrado": {
+      "titulo": "Maestría en Ingeniería en Telecomunicaciones",
+      "institucion": "Instituto Politécnico Nacional (IPN)",
+      "estado": "Egresado con obtención de grado en proceso"
+    },
+    "idiomas": {
+      "ingles": "Avanzado / Intermedio-Alto",
+      "certificacion": "TOEFL ITP (510 puntos)"
+    }
+  }
+}
