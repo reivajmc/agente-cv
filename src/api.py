@@ -8,10 +8,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 
+load_dotenv(override=True)
+
+# Sanitizar y garantizar valores válidos ANTES de importar src.agent
+for var in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "LLM_MODEL"):
+    val = os.environ.get(var)
+    if val is not None:
+        os.environ[var] = val.strip().strip('"').strip("'")
+
+if not os.environ.get("OPENAI_BASE_URL", "").startswith(("http://", "https://")):
+    os.environ["OPENAI_BASE_URL"] = "https://generativelanguage.googleapis.com/v1beta/openai/"
+
+if not os.environ.get("LLM_MODEL"):
+    os.environ["LLM_MODEL"] = "gemini-flash-lite-latest"
+
 from src.agent import AgenteCV
 from src.schemas import ChatRequest, ChatResponse, HealthResponse
-
-load_dotenv(override=True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
@@ -22,12 +34,6 @@ agente_global: Optional[AgenteCV] = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global agente_global
-    # Sanitizar comillas o espacios accidentales en variables inyectadas en cloud
-    for var in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "LLM_MODEL"):
-        val = os.environ.get(var)
-        if val is not None:
-            os.environ[var] = val.strip().strip('"').strip("'")
-
     try:
         agente_global = AgenteCV()
     except Exception as e:
