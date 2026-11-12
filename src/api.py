@@ -1,4 +1,5 @@
 import os
+import traceback
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
@@ -21,10 +22,16 @@ agente_global: Optional[AgenteCV] = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global agente_global
+    # Sanitizar comillas o espacios accidentales en variables inyectadas en cloud
+    for var in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "LLM_MODEL"):
+        val = os.environ.get(var)
+        if val is not None:
+            os.environ[var] = val.strip().strip('"').strip("'")
+
     try:
         agente_global = AgenteCV()
     except Exception as e:
-        print(f"Error crítico al inicializar AgenteCV: {e}")
+        traceback.print_exc()
         raise e
     yield
     agente_global = None
@@ -96,7 +103,9 @@ async def chat_endpoint(payload: ChatRequest):
             usage=resultado["tokens_consumo"],
         )
     except Exception as e:
+        traceback.print_exc()
+        causa = f" ({type(e.__cause__).__name__}: {e.__cause__})" if e.__cause__ else ""
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Fallo durante la ejecución agéntica: {str(e)}"
+            detail=f"Fallo durante la ejecución agéntica: {str(e)}{causa}"
         )
