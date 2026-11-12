@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente CV | Javier Melendrez Cedillo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+    <style>
+        .markdown-body p { margin-bottom: 0.65rem; }
+        .markdown-body p:last-child { margin-bottom: 0; }
+        .markdown-body ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.65rem; }
+        .markdown-body ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 0.65rem; }
+        .markdown-body li { margin-bottom: 0.25rem; }
+        .markdown-body strong { font-weight: 600; color: #f8fafc; }
+        .markdown-body code { background-color: #1e293b; padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-size: 0.85em; color: #38bdf8; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 h-screen flex flex-col font-sans antialiased">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 sm:px-6 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-md">
+                JM
+            </div>
+            <div>
+                <h1 class="text-base sm:text-lg font-semibold text-white leading-tight">
+                    Javier Melendrez Cedillo
+                </h1>
+                <p class="text-xs text-slate-400">
+                    Data Engineering Solutions Development Manager • Agente de CV
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <span id="status-badge" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950 text-emerald-400 border border-emerald-800/60">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Conectando...
+            </span>
+            <button onclick="resetChat()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+                Limpiar chat
+            </button>
+        </div>
+    </header>
+
+    <!-- Chat Area -->
+    <main id="chat-container" class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 space-y-6 max-w-4xl w-full mx-auto">
+        <!-- Mensaje de bienvenida -->
+        <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-xs font-bold text-indigo-400 shrink-0 mt-0.5">
+                IA
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none px-4 py-3.5 max-w-2xl shadow-sm">
+                <p class="text-sm text-slate-200 leading-relaxed">
+                    Hola. Soy el representante técnico virtual de <strong>Javier Melendrez Cedillo</strong>. Puedes consultarme sobre su experiencia en arquitectura Big Data (Spark, Python, AWS), liderazgo técnico bajo Scrum, casos de éxito en BBVA o pegar los requisitos de una vacante para evaluar su compatibilidad.
+                </p>
+                <!-- Sugerencias rápidas -->
+                <div class="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap gap-2">
+                    <button onclick="sendSuggestion('¿Qué experiencia tiene Javier con Apache Spark y AWS?')" class="text-xs bg-slate-800/80 hover:bg-indigo-600/30 hover:border-indigo-500/50 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition text-left">
+                        Stack Spark y AWS
+                    </button>
+                    <button onclick="sendSuggestion('¿Cómo resolvía fallas críticas de red o logs en producción?')" class="text-xs bg-slate-800/80 hover:bg-indigo-600/30 hover:border-indigo-500/50 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition text-left">
+                        Caso diagnóstico CloudWatch
+                    </button>
+                    <button onclick="sendSuggestion('¿Cuál es su rol como Scrum Master y el estándar VoBo QA +1?')" class="text-xs bg-slate-800/80 hover:bg-indigo-600/30 hover:border-indigo-500/50 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition text-left">
+                        Liderazgo y calidad QA
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Input Area -->
+    <footer class="bg-slate-900 border-t border-slate-800 px-4 py-3 sm:px-6 shrink-0">
+        <form id="chat-form" class="max-w-4xl mx-auto flex gap-2.5">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Escribe tu pregunta o pega la descripción de una vacante..."
+                autocomplete="off"
+                required
+                class="flex-1 bg-slate-950 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition"
+            />
+            <button
+                type="submit"
+                id="send-btn"
+                class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium text-sm px-5 py-2.5 rounded-xl transition flex items-center gap-2 shrink-0"
+            >
+                <span>Enviar</span>
+            </button>
+        </form>
+        <p class="text-[11px] text-center text-slate-500 mt-2">
+            Arquitectura ReAct • Tool Calling Determinista • Estándar Open Responses
+        </p>
+    </footer>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const statusBadge = document.getElementById('status-badge');
+
+        let chatHistory = [];
+
+        // Verificar salud y modelo activo al cargar
+        async function checkHealth() {
+            try {
+                const res = await fetch('/health');
+                if (res.ok) {
+                    const data = await res.json();
+                    statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Online • ${data.model}`;
+                    statusBadge.classList.remove('hidden');
+                }
+            } catch (e) {
+                statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span> Sin conexión`;
+            }
+        }
+        checkHealth();
+
+        function appendUserMessage(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-start justify-end gap-3';
+            wrapper.innerHTML = `
+                <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-2xl text-sm shadow-sm leading-relaxed">
+                    ${escapeHtml(text)}
+                </div>
+            `;
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function appendLoadingIndicator() {
+            const id = 'loading-' + Date.now();
+            const wrapper = document.createElement('div');
+            wrapper.id = id;
+            wrapper.className = 'flex items-start gap-3';
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-xs font-bold text-indigo-400 shrink-0 mt-0.5">
+                    IA
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-xs text-slate-400 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></span>
+                    <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+                    <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+                    <span class="ml-1">Consultando trayectoria y herramientas...</span>
+                </div>
+            `;
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+            return id;
+        }
+
+        function appendAgentMessage(data) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-start gap-3';
+
+            const cleanHtml = DOMPurify.sanitize(marked.parse(data.response || ''));
+
+            // Construir insignias de telemetría y herramientas
+            let toolsHtml = '';
+            if (data.tools_used && data.tools_used.length > 0) {
+                const toolNames = data.tools_used.map(t => `<span class="text-sky-400 font-mono">${t.herramienta}</span>`).join(', ');
+                toolsHtml = `<span class="inline-flex items-center gap-1">⚙️ Tools: ${toolNames}</span> • `;
+            } else {
+                toolsHtml = `<span class="inline-flex items-center gap-1">⚡ Respuesta directa</span> • `;
+            }
+
+            const tokens = data.usage ? data.usage.total_tokens : 0;
+
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-xs font-bold text-indigo-400 shrink-0 mt-0.5">
+                    IA
+                </div>
+                <div class="flex flex-col gap-1.5 max-w-2xl w-full">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none px-4 py-3.5 text-sm text-slate-200 leading-relaxed markdown-body shadow-sm">
+                        ${cleanHtml}
+                    </div>
+                    <div class="text-[11px] text-slate-500 px-1 flex flex-wrap items-center gap-1.5">
+                        ${toolsHtml}
+                        <span>🔄 Iteraciones: ${data.iterations}</span> •
+                        <span>📊 Tokens: ${tokens}</span>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function appendErrorMessage(msg) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-start gap-3';
+            wrapper.innerHTML = `
+                <div class="bg-rose-950/60 border border-rose-800 text-rose-300 rounded-xl px-4 py-3 text-xs max-w-2xl">
+                    ⚠️ Error al procesar la solicitud: ${escapeHtml(msg)}
+                </div>
+            `;
+            chatContainer.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        async function handleSend(text) {
+            if (!text.trim()) return;
+
+            appendUserMessage(text);
+            userInput.value = '';
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            const loadingId = appendLoadingIndicator();
+
+            try {
+                const response = await fetch('/api/v1/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        history: chatHistory
+                    })
+                });
+
+                document.getElementById(loadingId)?.remove();
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.detail || `HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                appendAgentMessage(data);
+
+                // Actualizar historial en memoria para continuidad multi-turno
+                chatHistory.push({ role: 'user', content: text });
+                chatHistory.push({ role: 'assistant', content: data.response });
+
+            } catch (error) {
+                document.getElementById(loadingId)?.remove();
+                appendErrorMessage(error.message);
+            } finally {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleSend(userInput.value);
+        });
+
+        function sendSuggestion(text) {
+            handleSend(text);
+        }
+
+        function resetChat() {
+            chatHistory = [];
+            const messages = chatContainer.querySelectorAll(':scope > div:not(:first-child)');
+            messages.forEach(m => m.remove());
+        }
+
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

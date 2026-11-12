@@ -1,8 +1,10 @@
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 
 from src.agent import AgenteCV
@@ -10,7 +12,9 @@ from src.schemas import ChatRequest, ChatResponse, HealthResponse
 
 load_dotenv(override=True)
 
-# Instancia global del agente
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_DIR = BASE_DIR / "static"
+
 agente_global: Optional[AgenteCV] = None
 
 
@@ -40,6 +44,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/", include_in_schema=False)
+async def serve_frontend():
+    """Sirve la interfaz web conversacional del MVP."""
+    index_path = STATIC_DIR / "index.html"
+    if not index_path.exists():
+        raise HTTPException(status_code=404, detail="Interfaz web no encontrada.")
+    return FileResponse(index_path)
 
 
 @app.get("/health", response_model=HealthResponse, tags=["Monitoreo"])
